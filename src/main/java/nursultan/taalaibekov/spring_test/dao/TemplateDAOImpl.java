@@ -1,6 +1,5 @@
 package nursultan.taalaibekov.spring_test.dao;
 
-
 import nursultan.taalaibekov.spring_test.Entities.RoutineTemplate;
 import nursultan.taalaibekov.spring_test.interfaces.IDAOTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +7,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 
-@Component("templateDAOImpl")
+@Repository
 public class TemplateDAOImpl implements IDAOTemplate {
 
     @Autowired

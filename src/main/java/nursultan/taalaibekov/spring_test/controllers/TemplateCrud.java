@@ -16,48 +16,43 @@ public class TemplateCrud {
     @Autowired
     private IDAOTemplate dao;
 
-    /*It displays a form to input data, here "command" is a reserved request attribute
-     *which is used to display object data into form
-     */
-    @RequestMapping("/empform")
+
+    @RequestMapping("/add")
     public String showform(Model m){
         m.addAttribute("command", new RoutineTemplate());
-        return "empform";
+        return "add";
     }
-    /*It saves object into database. The @ModelAttribute puts request data
-     *  into model object. You need to mention RequestMethod.POST method
-     *  because default request is GET*/
+
     @RequestMapping(value="/save",method = RequestMethod.POST)
     public String save(@ModelAttribute("emp") RoutineTemplate emp){
         dao.insert(emp);
-        return "redirect:/viewemp";//will redirect to viewemp request mapping
+        return "redirect:/list";
     }
-    /* It provides list of employees in model object */
-    @RequestMapping("/viewemp")
+
+    @RequestMapping("/list")
     public String viewemp(Model m){
         List<RoutineTemplate> list = dao.getAllElemtents();
         m.addAttribute("list",list);
-        return "viewemp";
+        return "list";
     }
-    /* It displays object data into form for the given id.
-     * The @PathVariable puts URL data into variable.*/
-    @RequestMapping(value="/editemp/{id}")
+
+    @RequestMapping(value="/edit/{id}")
     public String edit(@PathVariable int id, Model m){
         RoutineTemplate emp=dao.getElementById(id);
         m.addAttribute("command",emp);
-        return "empeditform";
+        return "edit";
     }
-    /* It updates model object. */
-    @RequestMapping(value="/editsave",method = RequestMethod.POST)
+
+    @RequestMapping(value="/update",method = RequestMethod.POST)
     public String editsave(@ModelAttribute("emp") RoutineTemplate emp){
         dao.update(emp);
-        return "redirect:/viewemp";
+        return "redirect:/list";
     }
-    /* It deletes record for the given id in URL and redirects to /viewemp */
-    @RequestMapping(value="/deleteemp/{id}",method = RequestMethod.GET)
+
+    @RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
     public String delete(@PathVariable int id){
         dao.deleteById(id);
-        return "redirect:/viewemp";
+        return "redirect:/list";
     }
 
 }

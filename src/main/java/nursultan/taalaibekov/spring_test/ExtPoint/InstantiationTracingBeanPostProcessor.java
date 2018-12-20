@@ -1,7 +1,9 @@
 package nursultan.taalaibekov.spring_test.ExtPoint;
 
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 
+//@Component
 public class InstantiationTracingBeanPostProcessor implements BeanPostProcessor {
 
     // simply return the instantiated bean as-is
