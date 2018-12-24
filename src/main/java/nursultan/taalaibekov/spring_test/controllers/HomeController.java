@@ -11,6 +11,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String home(Locale locale, Model model) {
-		return "index";
+        System.out.println("GOTCHA");
+	    return "index";
 	}
 }
