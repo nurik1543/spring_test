@@ -1,58 +1,67 @@
 package nursultan.taalaibekov.spring_test.controllers;
 
-
-import nursultan.taalaibekov.spring_test.Entities.RoutineTemplate;
-import nursultan.taalaibekov.spring_test.interfaces.IDAOTemplate;
+import nursultan.taalaibekov.spring_test.Entities.City;
+import nursultan.taalaibekov.spring_test.Entities.Region;
+import nursultan.taalaibekov.spring_test.Entities.Subscriber;
+import nursultan.taalaibekov.spring_test.interfaces.IDAOCity;
+import nursultan.taalaibekov.spring_test.interfaces.IDAORegion;
+import nursultan.taalaibekov.spring_test.interfaces.IDAOSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@Controller
+@RestController
 public class TemplateCrud {
+    private final String APPLICATION_JSON_VALUE = "application/json";
 
     @Autowired
-    private IDAOTemplate dao;
+    private IDAOCity daoCity;
 
+    @Autowired
+    private IDAORegion daoRegion;
 
-    @RequestMapping("/add")
-    public String showform(Model m){
-        m.addAttribute("command", new RoutineTemplate());
-        return "add";
+    @Autowired
+    private IDAOSubscriber daoSub;
+
+    @GetMapping(path="/subscriber/get/{id}", produces = APPLICATION_JSON_VALUE)
+    public Subscriber getSub(@PathVariable int id)
+    {
+        System.out.println("/subscriber/get/" + id);
+
+        return daoSub.getElementById(id);
     }
 
-    @RequestMapping(value="/save",method = RequestMethod.POST)
-    public String save(@ModelAttribute("emp") RoutineTemplate emp){
-        dao.insert(emp);
-        return "redirect:/list";
+
+    @PostMapping(path= "/subscriber/create", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public int createSub(@RequestBody Subscriber subscriber)
+    {
+        System.out.println("/subscriber/create: " + subscriber.toString());
+
+        return daoSub.insert(subscriber);
     }
 
-    @RequestMapping("/list")
-    public String viewemp(Model m){
-        List<RoutineTemplate> list = dao.getAllElemtents();
-        m.addAttribute("list",list);
-        return "list";
+    @PostMapping(path= "/subscriber/update", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public int updateSub(@RequestBody Subscriber subscriber)
+    {
+        System.out.println("/subscriber/update: " + subscriber.toString());
+
+        return daoSub.update(subscriber);
     }
 
-    @RequestMapping(value="/edit/{id}")
-    public String edit(@PathVariable int id, Model m){
-        RoutineTemplate emp=dao.getElementById(id);
-        m.addAttribute("command",emp);
-        return "edit";
+
+    @PostMapping(path= "/region/create", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public int createRegion(@RequestBody Region region)
+    {
+        System.out.println("/region/create: " + region.toString());
+
+        return daoRegion.insert(region);
     }
 
-    @RequestMapping(value="/update",method = RequestMethod.POST)
-    public String editsave(@ModelAttribute("emp") RoutineTemplate emp){
-        dao.update(emp);
-        return "redirect:/list";
-    }
+    @PostMapping(path= "/city/create", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public int createCity(@RequestBody City city)
+    {
+        System.out.println("/city/create: " + city.toString());
 
-    @RequestMapping(value="/delete/{id}",method = RequestMethod.GET)
-    public String delete(@PathVariable int id){
-        dao.deleteById(id);
-        return "redirect:/list";
+        return daoCity.insert(city);
     }
 
 }
